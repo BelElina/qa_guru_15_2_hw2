@@ -1,0 +1,59 @@
+package com.demoqa;
+
+import com.codeborne.selenide.Configuration;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
+
+public class TextFormTests {
+
+    @BeforeAll
+    static void setUp() {
+        Configuration.baseUrl = "https://demoqa.com";
+        Configuration.browserSize = "1920x1080";
+        Configuration.holdBrowserOpen = true;
+    }
+
+    @Test
+    void fillFormTests() {
+        open("/automation-practice-form");
+        $("#firstName").setValue("Elina");
+        $("#lastName").setValue("Kim");
+        $("#userEmail").setValue("Elina@yandex.ru");
+        $("#genterWrapper").$(byText("Female")).click();
+        $("#userNumber").setValue("89878226394");
+        $("#dateOfBirthInput").click();
+        $(".react-datepicker__month-select").selectOption("March");
+        $(".react-datepicker__year-select").selectOption("1990");
+        $(".react-datepicker__day--019").click();
+        $("#subjectsInput").setValue("Chemistry").pressEnter();
+        $("#hobbiesWrapper").$(byText("Reading")).click();
+        $("#uploadPicture").uploadFile(new File("src/test/resources/img.JPG"));
+        $("#currentAddress").setValue("Current adress");
+        $("#state").click();
+        $("#stateCity-wrapper").$(byText("Uttar Pradesh")).click();
+        $("#city").click();
+        $("#stateCity-wrapper").$(byText("Agra")).click();
+        $("#submit").click();
+
+        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
+        $(".table-responsive").shouldHave(text("Elina Kim"),
+                text("Elina@yandex.ru"),
+                text("Female"),
+                text("8987822639"),
+                text("19 March,1990"),
+                text("Chemistry"),
+                text("Reading"),
+                text("img.JPG"),
+                text("Current adress"),
+                text("Uttar Pradesh Agra"));
+
+        $("#closeLargeModal").click();
+         }
+}
