@@ -58,8 +58,8 @@ public class TextFormTests {
                 text("Current adress"),
                 text("Uttar Pradesh Agra"));
 
-       // $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text("Elina Kim"));
+        // $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text("Elina Kim"));
 
         $("#closeLargeModal").click();
-         }
+    }
 }
