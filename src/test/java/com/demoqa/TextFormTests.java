@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
+import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
@@ -23,6 +24,7 @@ public class TextFormTests {
     @Test
     void fillFormTests() {
         open("/automation-practice-form");
+        $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
         $("#firstName").setValue("Elina");
         $("#lastName").setValue("Kim");
         $("#userEmail").setValue("Elina@yandex.ru");
@@ -31,7 +33,7 @@ public class TextFormTests {
         $("#dateOfBirthInput").click();
         $(".react-datepicker__month-select").selectOption("March");
         $(".react-datepicker__year-select").selectOption("1990");
-        $(".react-datepicker__day--019").click();
+        $(".react-datepicker__day--019:not(.react-datepicker__day--outside-month)").click();
         $("#subjectsInput").setValue("Chemistry").pressEnter();
         $("#hobbiesWrapper").$(byText("Reading")).click();
         $("#uploadPicture").uploadFile(new File("src/test/resources/img.JPG"));
@@ -42,7 +44,9 @@ public class TextFormTests {
         $("#stateCity-wrapper").$(byText("Agra")).click();
         $("#submit").click();
 
+        $(".modal-dialog").should(appear);
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
+        //$(".table-responsive").$(byText("Student Name")).parent().shouldHave(text("Elina Kim"));
         $(".table-responsive").shouldHave(text("Elina Kim"),
                 text("Elina@yandex.ru"),
                 text("Female"),
@@ -53,6 +57,8 @@ public class TextFormTests {
                 text("img.JPG"),
                 text("Current adress"),
                 text("Uttar Pradesh Agra"));
+
+       // $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text("Elina Kim"));
 
         $("#closeLargeModal").click();
          }
