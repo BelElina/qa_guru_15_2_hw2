@@ -1,4 +1,4 @@
-package com.demoqa;
+package com.demoqa.tests;
 
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,7 +12,7 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-public class TextFormTests {
+public class RegistrationFormWithCommentsTests {
 
     @BeforeAll
     static void setUp() {
@@ -22,14 +22,14 @@ public class TextFormTests {
     }
 
     @Test
-    void fillFormTests() {
+    void fillFormTest() {
         open("/automation-practice-form");
         $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
         $("#firstName").setValue("Elina");
         $("#lastName").setValue("Kim");
         $("#userEmail").setValue("Elina@yandex.ru");
         $("#genterWrapper").$(byText("Female")).click();
-        $("#userNumber").setValue("89878226394");
+        $("#userNumber").setValue("8987822639");
         $("#dateOfBirthInput").click();
         $(".react-datepicker__month-select").selectOption("March");
         $(".react-datepicker__year-select").selectOption("1990");
@@ -37,7 +37,7 @@ public class TextFormTests {
         $("#subjectsInput").setValue("Chemistry").pressEnter();
         $("#hobbiesWrapper").$(byText("Reading")).click();
         $("#uploadPicture").uploadFile(new File("src/test/resources/img.JPG"));
-        $("#currentAddress").setValue("Current adress");
+        $("#currentAddress").setValue("Current address");
         $("#state").click();
         $("#stateCity-wrapper").$(byText("Uttar Pradesh")).click();
         $("#city").click();
@@ -47,6 +47,7 @@ public class TextFormTests {
         $(".modal-dialog").should(appear);
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
         //$(".table-responsive").$(byText("Student Name")).parent().shouldHave(text("Elina Kim"));
+        //$(".table-responsive").$(byText("Date of Birth")).parent().shouldHave(text("19 March,1990"));
         $(".table-responsive").shouldHave(text("Elina Kim"),
                 text("Elina@yandex.ru"),
                 text("Female"),
@@ -55,7 +56,7 @@ public class TextFormTests {
                 text("Chemistry"),
                 text("Reading"),
                 text("img.JPG"),
-                text("Current adress"),
+                text("Current address"),
                 text("Uttar Pradesh Agra"));
 
         // $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text("Elina Kim"));
