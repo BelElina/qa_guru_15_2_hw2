@@ -1,7 +1,6 @@
 package com.demoqa.tests;
 
 import com.codeborne.selenide.Configuration;
-import com.demoqa.pages.RegistrationFormPage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -13,28 +12,21 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-public class RegistrationFormTests {
-
-    @BeforeAll
-    static void setUp() {
-        Configuration.baseUrl = "https://demoqa.com";
-        Configuration.browserSize = "1920x1080";
-        Configuration.holdBrowserOpen = true;
-    }
+public class RegistrationFormWithTestBaseTests extends TestBase{
 
     @Test
     void fillFormTests() {
         open("/automation-practice-form");
         $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
-        $("#firstName").setValue("Elina");
-        $("#lastName").setValue("Kim");
-        $("#userEmail").setValue("Elina@yandex.ru");
+        $("#firstName").setValue(firstName);
+        $("#lastName").setValue(lastName);
+        $("#userEmail").setValue(email);
         $("#genterWrapper").$(byText("Female")).click();
-        $("#userNumber").setValue("8987822639");
+        $("#userNumber").setValue(phone);
         $("#dateOfBirthInput").click();
-        $(".react-datepicker__month-select").selectOption("March");
-        $(".react-datepicker__year-select").selectOption("1990");
-        $(".react-datepicker__day--019:not(.react-datepicker__day--outside-month)").click();
+        $(".react-datepicker__month-select").selectOption(month);
+        $(".react-datepicker__year-select").selectOption(year);
+        $(".react-datepicker__day--0" + day +":not(.react-datepicker__day--outside-month)").click();
         $("#subjectsInput").setValue("Chemistry").pressEnter();
         $("#hobbiesWrapper").$(byText("Reading")).click();
         $("#uploadPicture").uploadFile(new File("src/test/resources/img.JPG"));
@@ -47,17 +39,16 @@ public class RegistrationFormTests {
 
         $(".modal-dialog").should(appear);
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-        $(".table-responsive").shouldHave(text("Elina"),
-                text("Kim"),
-                text("Elina@yandex.ru"),
+        $(".table-responsive").shouldHave(text(firstName),
+                text(lastName),
+                text(email),
                 text("Female"),
-                text("8987822639"),
-                text("19 March,1990"),
+                text(phone),
+                text(day + " " + month +',' + year),
                 text("Chemistry"),
                 text("Reading"),
                 text("img.JPG"),
                 text("Current address"),
                 text("Uttar Pradesh Agra"));
-        $("#closeLargeModal").click();
     }
 }
