@@ -37,19 +37,17 @@ public class RegistrationFormWithFakerTests {
                 .clickSubmit();
 
 
-        $(".modal-dialog").should(appear);
-        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-        $(".table-responsive").shouldHave(text(firstName),
-                text(lastName),
-                text(email),
-                text("Female"),
-                text(phone),
-                text(day + " " + month +',' + year),
-                text("Chemistry"),
-                text("Reading"),
-                text("img.JPG"),
-                text(currentAddress),
-                text("Uttar Pradesh Agra"));
+        registrationFormPage.checkResultsTableVisible()
+                .checkResult("Student Name", firstName + " " + lastName)
+                .checkResult("Student Email", email)
+                .checkResult("Gender", "Female")
+                .checkResult("Mobile", phone)
+                .checkResult("Date of Birth", date)
+                .checkResult("Subjects", "Chemistry")
+                .checkResult("Hobbies", "Reading")
+                .checkResult("Picture", "img.JPG")
+                .checkResult("Address", currentAddress)
+                .checkResult("State and City", "Uttar Pradesh Agra");
     }
 
     @Test
