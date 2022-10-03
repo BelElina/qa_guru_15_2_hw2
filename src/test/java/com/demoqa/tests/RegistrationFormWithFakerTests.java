@@ -1,29 +1,25 @@
 package com.demoqa.tests;
 
 import com.codeborne.selenide.Configuration;
+import com.demoqa.pages.RegistrationFormPage;
+import com.github.javafaker.Faker;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import utils.RandomUtils;
+import testData.UserInfo;
 
 import java.io.File;
+import java.util.Locale;
 
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
-import static utils.RandomUtils.*;
+import static testData.UserInfo.*;
 
 public class RegistrationFormWithFakerTests {
-
-    String firstName = getRandomString(10);
-    String lastName = getRandomString(10);
-    String email = getRandomEmail();
-    String currentAddress = getRandomAlphabetics(20);
-    String phone = getRandomPhone();
-    String day = "19";
-    String month = "March";
-    String year = "1990";
-
+    RegistrationFormPage registrationFormPage = new RegistrationFormPage();
 
     @BeforeAll
     static void setUp() {
@@ -34,26 +30,20 @@ public class RegistrationFormWithFakerTests {
 
     @Test
     void fillFormTests() {
-        open("/automation-practice-form");
-        $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
-        $("#firstName").setValue(firstName);
-        $("#lastName").setValue(lastName);
-        $("#userEmail").setValue(email);
-        $("#genterWrapper").$(byText("Female")).click();
-        $("#userNumber").setValue(phone);
-        $("#dateOfBirthInput").click();
-        $(".react-datepicker__month-select").selectOption(month);
-        $(".react-datepicker__year-select").selectOption(year);
-        $(".react-datepicker__day--0" + day +":not(.react-datepicker__day--outside-month)").click();
-        $("#subjectsInput").setValue("Chemistry").pressEnter();
-        $("#hobbiesWrapper").$(byText("Reading")).click();
-        $("#uploadPicture").uploadFile(new File("src/test/resources/img.JPG"));
-        $("#currentAddress").setValue(currentAddress);
-        $("#state").click();
-        $("#stateCity-wrapper").$(byText("Uttar Pradesh")).click();
-        $("#city").click();
-        $("#stateCity-wrapper").$(byText("Agra")).click();
-        $("#submit").click();
+        registrationFormPage.openPage()
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setEmail(email)
+                .setGender("Female")
+                .setUserNumber(phone)
+                .setBirthDate(day, month, year)
+                .setSubject("Chemistry")
+                .setSHobbies("Reading")
+                .uploadPicture("src/test/resources/img.JPG")
+                .setCurrentAddress(currentAddress)
+                .setStateCity("Uttar Pradesh", "Agra")
+                .clickSubmit();
+
 
         $(".modal-dialog").should(appear);
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
@@ -66,7 +56,23 @@ public class RegistrationFormWithFakerTests {
                 text("Chemistry"),
                 text("Reading"),
                 text("img.JPG"),
-                text("Current address"),
+                text(currentAddress),
                 text("Uttar Pradesh Agra"));
+    }
+
+    @Test
+    void fillFormWithMinimumDataTest() {
+        registrationFormPage.openPage()
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setGender("Female")
+                .setUserNumber(phone)
+                .clickSubmit();
+
+        registrationFormPage.checkResultsTableVisible()
+                .checkResult("Student Name", firstName + " " + lastName)
+                .checkResult("Gender", "Female")
+                .checkResult("Mobile", phone);
+
     }
 }

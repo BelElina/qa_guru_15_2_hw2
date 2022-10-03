@@ -1,31 +1,25 @@
 package com.demoqa.tests;
 
 import com.codeborne.selenide.Configuration;
-import com.github.javafaker.Faker;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.util.Locale;
 
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
-import static com.demoqa.tests.TestData.*;
-import static com.demoqa.tests.TestData.year;
 import static utils.RandomUtils.*;
 
 public class RegistrationFormWithRandomUtilsTests {
 
-    //Faker faker = new Faker();
-    Faker faker = new Faker(new Locale("de"));
-    String firstName = faker.name().firstName();
-    String lastName = faker.name().lastName();
-    String email = faker.internet().emailAddress();
-    String currentAddress = faker.address().fullAddress();
-    String phone = faker.phoneNumber().subscriberNumber(10);
+    String firstName = getRandomString(10);
+    String lastName = getRandomString(10);
+    String email = getRandomEmail();
+    String currentAddress = getRandomAlphabetics(20);
+    String phone = getRandomPhone();
     String day = "19";
     String month = "March";
     String year = "1990";
@@ -40,7 +34,6 @@ public class RegistrationFormWithRandomUtilsTests {
 
     @Test
     void fillFormTests() {
-
         open("/automation-practice-form");
         $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
         $("#firstName").setValue(firstName);

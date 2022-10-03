@@ -23,13 +23,28 @@ public class RandomUtils {
     }
 
     public static String getRandomEmail() {
-        return getRandomString(10) + "@qa.guru";
 
+        return getRandomString(10) + "@qa.guru";
     }
 
-    public static Long getRandomLong(Long min, Long max) { return ThreadLocalRandom.current().nextLong(min, max); }
+    public static Long getRandomLong(Long min, Long max) {
+
+        return ThreadLocalRandom.current().nextLong(min, max);
+    }
 
     public static String getRandomPhone() {
+
         return "+000" + getRandomLong(1111111111L, 9999999999L).toString();
+    }
+
+    public enum Month {
+        January, February, March, April,
+        May, June, July, August,
+        September, October, November, December;
+
+        public static Month getRandomMonth() {
+            int pick = new Random().nextInt(Month.values().length);
+            return Month.values()[pick];
+        }
     }
 }
